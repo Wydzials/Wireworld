@@ -27,7 +27,7 @@ public class fileReader {
                 throw new IllegalArgumentException();
             for(int i=0; i < sizeX; i++) { //i staje się numerem kolumny
                 if(Character.isDigit( (gridLine[i]).charAt(0) ) )
-                grid[numOfLine][i] = new Cell(Cell.State.values()[Character.getNumericValue(gridLine[i].charAt(0))]);
+                grid[numOfLine][i] = new Cell(Character.getNumericValue(gridLine[i].charAt(0)));
             }
             numOfLine++;
         }

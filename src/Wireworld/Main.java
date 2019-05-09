@@ -32,6 +32,7 @@ public class Main extends Application{
     public static void main(String[] args) {
         SimulationMain.main("data/dane.txt");
         //launch(args);
+        System.exit(0);
     }
 }
 
