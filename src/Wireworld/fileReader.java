@@ -1,13 +1,13 @@
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+package Wireworld;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class fileReader {
-    public static gridContainer readFile(String path) throws IOException, IllegalArgumentException, BlankFileException{
+    public static Grid readFile(String path) throws IOException, IllegalArgumentException, BlankFileException{
 
-        //Rozpoczynam wczyt pliku od odczytania pierwszej lini poprzez użycie funkcji readFirstLine, zapisuje wymiary siatki
+        //Rozpoczynam wczytanie pliku od odczytania pierwszej lini poprzez użycie funkcji readFirstLine, zapisuje wymiary siatki
         BufferedReader bf = new BufferedReader(new FileReader(path));
         String lineContainer;
 
@@ -15,10 +15,10 @@ public class fileReader {
         int sizeY = sizeXY[0];
         int sizeX = sizeXY[1];
         //Rozpoczynam odczyt siatki
-        char[][] grid = new char[sizeY][sizeX];
+        Cell[][] grid = new Cell[sizeY][sizeX];
         int numOfLine = 0;
 
-        while( (lineContainer = bf.readLine()) != null){
+        while((lineContainer = bf.readLine()) != null){
             if(numOfLine >= sizeY){
                 throw new IllegalArgumentException();
             }
@@ -27,11 +27,11 @@ public class fileReader {
                 throw new IllegalArgumentException();
             for(int i=0; i < sizeX; i++) { //i staje się numerem kolumny
                 if(Character.isDigit( (gridLine[i]).charAt(0) ) )
-                grid[numOfLine][i] = (gridLine[i]).charAt(0);
+                grid[numOfLine][i] = new Cell(Cell.State.values()[Character.getNumericValue(gridLine[i].charAt(0))]);
             }
             numOfLine++;
         }
-        return new gridContainer(sizeX, sizeY, grid);
+        return new Grid(sizeX, sizeY, grid);
     }
 
     public static int[] readFirstLine(BufferedReader bf) throws IOException, BlankFileException, IllegalArgumentException{

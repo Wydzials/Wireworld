@@ -1,8 +1,10 @@
-public class options implements IOptions{
+package Wireworld;
+
+public class Options implements IOptions{
     private int numOfGenerations;
     private int speedOfDepiction;
 
-    public options(int numOfGenerations, int speedOfDepiction){
+    public Options(int numOfGenerations, int speedOfDepiction){
         this.numOfGenerations = numOfGenerations;
         this.speedOfDepiction = speedOfDepiction;
     }

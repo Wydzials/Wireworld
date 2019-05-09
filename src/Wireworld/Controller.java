@@ -1,12 +1,17 @@
 package Wireworld;
 
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+
 
 import java.io.File;
 
@@ -31,7 +36,12 @@ public class Controller {
     @FXML
     private Text topText;
     @FXML
-    private Pane pane;
+    public Canvas canvas;
+    @FXML
+    private VBox centerVBox;
+
+    public final int rectSize = 15;
+    public GraphicsContext gc;
 
     @FXML
     void simulationSpeedSliderDragged() {
@@ -45,14 +55,13 @@ public class Controller {
 
     @FXML
     void selectorOnAction(){
-
     }
 
     @FXML
     void openFileMenuOnAction() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Otwórz plik z planszą");
-        File selectedFile = fileChooser.showOpenDialog(Main.primaryStage);
+        File selectedFile = fileChooser.showOpenDialog(Main.stage);
         if(selectedFile != null)
             console.setText(console.getText() + '\n' + selectedFile.getAbsolutePath());
     }
@@ -67,32 +76,38 @@ public class Controller {
 
         @FXML
     void initialize() {
+        SimulationMain.main("data/dane.txt");
+        Main.controller = this;
         selector.getItems().removeAll(selector.getItems());
         selector.getItems().addAll("Pusta komórka", "Przewodnik", "Głowa elektronu", "Ogon elektronu");
-        /*for(int i = 0; i < 10; i++)
-            for(int j = 0; j < 10; j++) {
-                Pane cellPane = new Pane();
-                cellPane.setPrefSize(5, 5);
-                GridPane.setFillHeight(cellPane, true);
-                GridPane.setFillWidth(cellPane, true);
-                gridPane.add(cellPane, i, j);
-            }*/
 
-            int columns = 40, rows = 60 , horizontal = 15, vertical = 15;
-            Rectangle rect;
-            for(int i = 0; i < columns; ++i)
-            {
-                for(int j = 0; j < rows; ++j)
-                {
-                    rect = new Rectangle(horizontal*j, vertical*i, horizontal, vertical);
-
-                    rect.setStroke(Color.BLACK);
-                    rect.setFill(Color.WHITE);
-
-                    pane.getChildren().add(rect);
-                }
-            }
-            pane.getChildren().remove(400, 410);
+        centerVBox.setMinSize(1200, 750);
+        canvas.setHeight(900);
+        canvas.setWidth(1000);
+        gc = canvas.getGraphicsContext2D();
+        showGrid(Main.grid);
     }
+
+    public void showGrid(Grid grid) {
+        int rectSize = 15;
+        Rectangle rect;
+        int columns = grid.getSizeX();
+        int rows = grid.getSizeY();
+        centerVBox.setMinSize(columns*rectSize + 1, rows*rectSize + 20);
+
+        for(int i = 0; i < rows; i++)
+            for(int j = 0; j < columns; j++) {
+                Color color = (i+j)%2 == 0 ? Color.BLACK : Color.RED;
+                printCell(j, i, color);
+            }
+    }
+    private void printCell(int x, int y, Color color) {
+        gc.setFill(color);
+        gc.setStroke(Color.DARKGREY);
+        gc.setLineWidth(1);
+        gc.fillRect(x*rectSize, y*rectSize, rectSize, rectSize);
+        gc.strokeRect(x*rectSize, y*rectSize, rectSize, rectSize);
+    }
+
 
 }

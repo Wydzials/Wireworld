@@ -1,14 +1,20 @@
-public class gridContainer {
+package Wireworld;
+
+public class Grid {
     private int sizeX;
     private int sizeY;
-    private char[][] grid;
-    private char[][] gridTmp;
+    private Cell[][] grid;
+    private Cell[][] gridTmp;
 
-    public gridContainer(int sizeX, int sizeY, char[][] grid){
+    public Grid(int sizeX, int sizeY, Cell[][] grid){
         this.grid = grid;
         this.sizeX = sizeX;
         this.sizeY = sizeY;
-        gridTmp = new char[sizeY][sizeX];
+        gridTmp = new Cell[sizeY][sizeX];
+        for(int i = 0; i < sizeX; i++)
+            for(int j = 0; j < sizeY; j++) {
+                gridTmp[j][i] = new Cell();
+            }
     }
 
     public int getSizeX() {
@@ -19,12 +25,18 @@ public class gridContainer {
         return sizeY;
     }
 
-    public char[][] getGrid() {
+    public Cell[][] getGrid() {
         return grid;
     }
 
-    public char[][] getGridTmp() {
+    public Cell[][] getGridTmp() {
         return gridTmp;
+    }
+
+    public Cell getCell(int x, int y) {
+        if(x < 0 || x > sizeX || y < 0 || y > sizeY)
+            return null;
+        return grid[x][y];
     }
 
     public void copyGrid(){

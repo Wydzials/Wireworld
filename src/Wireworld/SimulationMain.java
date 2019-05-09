@@ -1,12 +1,14 @@
+package Wireworld;
+
 import java.io.IOException;
 
-public class MMain {
-    public static void main(String[] args) {
-        System.out.println("Witaj w symulacji Wireworld, otwieram podany plik z danymi:" + " " +  args[0]);
+public class SimulationMain {
+    public static void main(String path) {
+        System.out.println("Witaj w symulacji Wireworld, otwieram podany plik z danymi:" + " " +  path);
         try {
-            gridContainer grid = fileReader.readFile(args[0]);
-            options opt = new options(4,2000);
-            ( new simulation() ).simulator(opt,grid);
+            Grid grid = fileReader.readFile(path);
+            Options opt = new Options(4,2000);
+            ( new Simulation() ).simulator(opt,grid);
 
         }catch (IOException e){
             System.err.println("Nie istnieje podany plik");
@@ -19,3 +21,4 @@ public class MMain {
     }
 
 }
+

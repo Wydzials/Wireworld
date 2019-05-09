@@ -6,23 +6,33 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
-    public static Stage primaryStage;
+public class Main extends Application{
+    public static Stage stage;
+    public static Controller controller;
+    public static Grid grid;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage stage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("GUI.fxml"));
-        primaryStage.setTitle("Wireworld");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.setResizable(true);
-        primaryStage.setMinHeight(600);
-        primaryStage.setMinWidth(800);
-        primaryStage.show();
-        this.primaryStage = primaryStage;
+        stage.setTitle("Wireworld");
+        stage.setScene(new Scene(root));
+        stage.setResizable(true);
+        stage.setMinHeight(600);
+        stage.setMinWidth(800);
+        stage.show();
+        this.stage = stage;
+    }
+
+    public static void update() {
+        System.out.println("XD");
+        controller.showGrid(grid);
     }
 
 
     public static void main(String[] args) {
-        launch(args);
+        SimulationMain.main("data/dane.txt");
+        //launch(args);
     }
 }
+
+
