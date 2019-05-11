@@ -27,6 +27,8 @@ public class Controller {
     @FXML
     private Button startButton;
     @FXML
+    private Button NextGenerationButton;
+    @FXML
     private MenuItem openFileMenu;
     @FXML
     private MenuItem exitMenu;
@@ -52,6 +54,8 @@ public class Controller {
     public Simulation simulation;
     public Grid grid;
 
+    public double cellSize;
+
     @FXML
     void simulationSpeedSliderDragged() {
         simulationSpeedLabel.setText("Szybkość symulacji: " + Math.round(simulationSpeedSlider.getValue()));
@@ -71,8 +75,16 @@ public class Controller {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Otwórz plik z planszą");
         File selectedFile = fileChooser.showOpenDialog(Main.stage);
-        if(selectedFile != null)
-            console.setText(console.getText() + '\n' + selectedFile.getAbsolutePath());
+        if(selectedFile != null) {
+            console.setText(console.getText() + "\n Otwieram plik: " + selectedFile.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    void nextGenerationButtonOnAction() {
+        simulation.nextGeneration();
+        grid.printGrid();
+        CanvasUtils.printGrid(grid, cellSize, gc);
     }
 
     @FXML
@@ -82,34 +94,38 @@ public class Controller {
         }
         else
             startButton.setText("START");
-        simulation.nextGeneration();
-        grid.printGrid();
-        CanvasUtils.printGrid(grid, (int)(ZoomSlider.getValue()* 10), gc);
     }
 
     @FXML
     void zoomSliderDragged() {
-        CanvasUtils.printGrid(grid, (int)(ZoomSlider.getValue()* 10), gc);
+        cellSize = ZoomSlider.getValue()* 10;
+        CanvasUtils.printGrid(grid, cellSize, gc);
     }
+
+    @FXML
+    void scrollPaneClicked() {
+    }
+
 
     void initializeCanvasEventHandler() {
         canvas.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        double x = event.getX();
-                        double y = event.getY();
-                        double cellSize = (int)(ZoomSlider.getValue()* 10);
-                        System.out.println(x + " " + y);
-                        int row = (int)((y - y%cellSize)/cellSize);
-                        int column = (int)((x - x%cellSize)/cellSize);
-                        System.out.println(row + " " + column);
-                        if(row < grid.getRows() && column < grid.getColumns()) {
+
+                        int row = (int)((event.getY() - event.getY()%cellSize)/cellSize);
+                        int column = (int)((event.getX() - event.getX()%cellSize)/cellSize);
+                        System.out.println(event.getX() + " " + event.getY() + " (" + row + ", " + column + ")");
+
+                        if (row < grid.getRows() && column < grid.getColumns()) {
                             Cell.State newState = Cell.State.values()[selector.getSelectionModel().getSelectedIndex()];
                             grid.getCell(row, column).setState(newState);
+                            CanvasUtils.printGrid(grid, cellSize, gc);
+                        } else {
+                            grid.extend(grid.getRows() + 1, grid.getColumns() + 1);
+                            CanvasUtils.printGrid(grid, cellSize, gc);
                         }
-                        CanvasUtils.printGrid(grid, (int)cellSize, gc);
-                        //CanvasUtils.printCell(row, column, (int)cellSize, gc, grid.getCell(row, column), true);
+
                     }
                 });
     }
@@ -120,10 +136,10 @@ public class Controller {
         Main.controller = this;
         selector.getItems().addAll("Pusta komórka", "Głowa elektronu", "Ogon elektronu", "Przewodnik");
         selector.getSelectionModel().select(0);
+        cellSize = ZoomSlider.getValue()* 10;
 
         centerVBox.setMinSize(1200, 750);
-        canvas.setHeight(1000);
-        canvas.setWidth(1500);
+
         gc = canvas.getGraphicsContext2D();
         initializeCanvasEventHandler();
 
@@ -135,6 +151,7 @@ public class Controller {
             System.err.println("Podano pusty plik");
         }
         simulation = new Simulation(grid);
-        CanvasUtils.printGrid(grid, (int)(ZoomSlider.getValue()* 10), gc);
+        CanvasUtils.printGrid(grid, cellSize, gc);
+
     }
 }

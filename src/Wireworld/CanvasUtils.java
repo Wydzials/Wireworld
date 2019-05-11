@@ -4,11 +4,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class CanvasUtils {
-    public static  void printGrid(Grid grid, int cellSize, GraphicsContext gc) {
+    public static void printGrid(Grid grid, double cellSize, GraphicsContext gc) {
         int columns = grid.getColumns();
         int rows = grid.getRows();
-        Main.controller.canvas.setWidth(cellSize * columns);
-        Main.controller.canvas.setHeight(cellSize * rows);
+        Main.controller.canvas.setWidth(cellSize * columns + 100);
+        Main.controller.canvas.setHeight(cellSize * rows + 100);
 
         gc.clearRect(0, 0, 2000, 2000);
         for(int i = 0; i < rows; i++)
@@ -17,7 +17,7 @@ public class CanvasUtils {
             }
     }
 
-    public static void printCell(int row, int column, int size, GraphicsContext gc, Cell cell, boolean highlighted) {
+    public static void printCell(int row, int column, double size, GraphicsContext gc, Cell cell, boolean highlighted) {
         Color[] colors = {Color.BLACK, Color.BLUE, Color.RED, Color.YELLOW};
         Color[] lightColors = {Color.GREY, Color.LIGHTBLUE, Color.LIGHTSALMON, Color.LIGHTYELLOW};
         if(!highlighted)

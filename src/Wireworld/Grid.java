@@ -1,5 +1,7 @@
 package Wireworld;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
+
 public class Grid {
     private int columns;
     private int rows;
@@ -50,6 +52,32 @@ public class Grid {
             System.out.println();
         }
         System.out.println();
+    }
+
+    public void extend(int targetRows, int targetColumns) {
+        if(targetColumns < columns || targetRows < rows) {
+            //throw new InvalidArgumentException();
+        }
+
+        Cell[][] newGrid = new Cell[targetRows][targetColumns];
+        Cell[][] newGridTmp = new Cell[targetRows][targetColumns];
+
+        for(int row = 0; row < targetRows; row++) {
+            for (int column = 0; column < targetColumns; column++) {
+                if (row < rows && column < columns)
+                    newGrid[row][column] = new Cell(getCell(row, column).getState());
+                else
+                    newGrid[row][column] = new Cell();
+                newGridTmp[row][column] = new Cell();
+            }
+        }
+
+        grid = newGrid;
+        gridTmp = newGridTmp;
+
+        rows = targetRows;
+        columns = targetColumns;
+
     }
 
 }

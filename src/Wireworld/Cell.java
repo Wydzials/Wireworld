@@ -1,13 +1,12 @@
 package Wireworld;
 
 public class Cell {
+
     public enum State {EMPTY, HEAD, TAIL, CONDUCTOR};
     private State state;
 
     public Cell() { state = State.EMPTY; }
-
     public Cell(State state) { this.state = state; }
-
     public Cell(int s) { setState(s); }
 
     public State getState() {
