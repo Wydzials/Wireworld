@@ -12,8 +12,8 @@ public class CellChecker implements ICellChecker {
             int numOfElectrons = 0;
             for(int i=-1; i<2; i++)
                 for(int j=-1; j<2; j++) {
-                    if (grid.getGrid()[(i + row + grid.getSizeY()) % grid.getSizeY()]
-                            [(j + col + grid.getSizeX()) % grid.getSizeX()].getState() == Cell.State.HEAD)
+                    if (grid.getGrid()[(i + row + grid.getRows()) % grid.getRows()]
+                            [(j + col + grid.getColumns()) % grid.getColumns()].getState() == Cell.State.HEAD)
                         numOfElectrons++;
                 }
             if( numOfElectrons == 1 || numOfElectrons == 2)

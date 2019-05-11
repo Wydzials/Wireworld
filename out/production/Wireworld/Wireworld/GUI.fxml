@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.Slider?>
@@ -66,6 +67,15 @@
                      </padding>
                   </Label>
                   <Slider fx:id="simulationSpeedSlider" min="1.0" onMouseClicked="#simulationSpeedSliderDragged" onMouseDragged="#simulationSpeedSliderDragged" prefHeight="18.0" prefWidth="247.0" />
+                  <Label fx:id="ZoomLabel" alignment="CENTER" prefHeight="31.0" prefWidth="188.0" text="Zoom">
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Slider fx:id="ZoomSlider" max="20.0" min="1.0" onMouseClicked="#zoomSliderDragged" onMouseDragged="#zoomSliderDragged" prefHeight="18.0" prefWidth="247.0" value="5.5" />
                   <ComboBox fx:id="selector" onAction="#selectorOnAction" prefHeight="31.0" prefWidth="195.0" promptText="Pusta komórka">
                      <VBox.margin>
                         <Insets top="20.0" />
@@ -96,7 +106,15 @@
       <VBox fx:id="centerVBox" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: lightgreen;" BorderPane.alignment="CENTER">
          <children>
             <Text fx:id="topText" strokeType="OUTSIDE" strokeWidth="0.0" text="Generacja: 0   Populacja: 0" />
-            <Canvas fx:id="canvas" height="655.0" width="935.0" VBox.vgrow="ALWAYS" />
+            <ScrollPane fx:id="ScrollPane" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0">
+                     <children>
+                        <Canvas fx:id="canvas" height="655.0" width="935.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
          </children>
       </VBox>
    </center>

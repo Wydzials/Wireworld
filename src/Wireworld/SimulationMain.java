@@ -8,7 +8,7 @@ public class SimulationMain {
         try {
             Grid grid = fileReader.readFile(path);
             Options opt = new Options(4,2000);
-            ( new Simulation() ).simulator(opt,grid);
+            ( new Simulation(grid) ).simulator(opt,grid);
 
         }catch (IOException e){
             System.err.println("Nie istnieje podany plik");

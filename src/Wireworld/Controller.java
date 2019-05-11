@@ -1,9 +1,11 @@
 package Wireworld;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -12,6 +14,7 @@ import javafx.stage.FileChooser;
 
 
 import java.io.File;
+import java.io.IOException;
 
 import static java.lang.System.exit;
 
@@ -37,9 +40,17 @@ public class Controller {
     public Canvas canvas;
     @FXML
     private VBox centerVBox;
+    @FXML
+    private Label ZoomLabel;
+    @FXML
+    private Slider ZoomSlider;
+    @FXML
+    private ScrollPane ScrollPane;
 
-    public final int rectSize = 15;
     public GraphicsContext gc;
+
+    public Simulation simulation;
+    public Grid grid;
 
     @FXML
     void simulationSpeedSliderDragged() {
@@ -66,46 +77,64 @@ public class Controller {
 
     @FXML
     void startButtonOnAction() {
-        if(startButton.getText().equals("START"))
+        if(startButton.getText().equals("START")) {
             startButton.setText("STOP");
+        }
         else
             startButton.setText("START");
+        simulation.nextGeneration();
+        grid.printGrid();
+        CanvasUtils.printGrid(grid, (int)(ZoomSlider.getValue()* 10), gc);
     }
 
-        @FXML
+    @FXML
+    void zoomSliderDragged() {
+        CanvasUtils.printGrid(grid, (int)(ZoomSlider.getValue()* 10), gc);
+    }
+
+    void initializeCanvasEventHandler() {
+        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        double x = event.getX();
+                        double y = event.getY();
+                        double cellSize = (int)(ZoomSlider.getValue()* 10);
+                        System.out.println(x + " " + y);
+                        int row = (int)((y - y%cellSize)/cellSize);
+                        int column = (int)((x - x%cellSize)/cellSize);
+                        System.out.println(row + " " + column);
+                        if(row < grid.getRows() && column < grid.getColumns()) {
+                            Cell.State newState = Cell.State.values()[selector.getSelectionModel().getSelectedIndex()];
+                            grid.getCell(row, column).setState(newState);
+                        }
+                        CanvasUtils.printGrid(grid, (int)cellSize, gc);
+                        //CanvasUtils.printCell(row, column, (int)cellSize, gc, grid.getCell(row, column), true);
+                    }
+                });
+    }
+
+
+    @FXML
     void initialize() {
-        SimulationMain.main("data/dane.txt");
         Main.controller = this;
-        selector.getItems().removeAll(selector.getItems());
-        selector.getItems().addAll("Pusta komórka", "Przewodnik", "Głowa elektronu", "Ogon elektronu");
+        selector.getItems().addAll("Pusta komórka", "Głowa elektronu", "Ogon elektronu", "Przewodnik");
+        selector.getSelectionModel().select(0);
 
         centerVBox.setMinSize(1200, 750);
-        canvas.setHeight(900);
-        canvas.setWidth(1000);
+        canvas.setHeight(1000);
+        canvas.setWidth(1500);
         gc = canvas.getGraphicsContext2D();
-        showGrid(Main.grid);
+        initializeCanvasEventHandler();
+
+        try {
+            grid = fileReader.readFile("data/dane3.txt");
+        }catch (IOException e){
+            System.err.println("Nie istnieje podany plik");
+        }catch(BlankFileException e) {
+            System.err.println("Podano pusty plik");
+        }
+        simulation = new Simulation(grid);
+        CanvasUtils.printGrid(grid, (int)(ZoomSlider.getValue()* 10), gc);
     }
-
-    public void showGrid(Grid grid) {
-        int rectSize = 15;
-        Rectangle rect;
-        int columns = grid.getSizeX();
-        int rows = grid.getSizeY();
-        centerVBox.setMinSize(columns*rectSize + 1, rows*rectSize + 20);
-
-        for(int i = 0; i < rows; i++)
-            for(int j = 0; j < columns; j++) {
-                Color color = (i+j)%2 == 0 ? Color.BLACK : Color.RED;
-                printCell(j, i, color);
-            }
-    }
-    private void printCell(int x, int y, Color color) {
-        gc.setFill(color);
-        gc.setStroke(Color.DARKGREY);
-        gc.setLineWidth(1);
-        gc.fillRect(x*rectSize, y*rectSize, rectSize, rectSize);
-        gc.strokeRect(x*rectSize, y*rectSize, rectSize, rectSize);
-    }
-
-
 }
