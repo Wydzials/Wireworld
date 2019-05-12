@@ -54,11 +54,9 @@ public class Grid {
         System.out.println();
     }
 
-    public void extend(int targetRows, int targetColumns) {
-        if(targetColumns < columns || targetRows < rows) {
-            //throw new InvalidArgumentException();
-        }
-
+    public void resize(int targetRows, int targetColumns) {
+        if(targetRows == rows && targetColumns == columns)
+            return;
         Cell[][] newGrid = new Cell[targetRows][targetColumns];
         Cell[][] newGridTmp = new Cell[targetRows][targetColumns];
 

@@ -47,7 +47,11 @@ public class Controller {
     @FXML
     private Slider ZoomSlider;
     @FXML
-    private ScrollPane ScrollPane;
+    public ScrollPane ScrollPane;
+    @FXML
+    private Slider RowsSlider;
+    @FXML
+    private Slider ColumnsSlider;
 
     public GraphicsContext gc;
 
@@ -106,29 +110,49 @@ public class Controller {
     void scrollPaneClicked() {
     }
 
+    @FXML
+    void RowsSliderDragged() {
+        grid.resize((int)Math.round(RowsSlider.getValue()), grid.getColumns());
+        CanvasUtils.printGrid(grid, cellSize, gc);
 
+    }
+
+    @FXML
+    void ColumnsSliderDragged() {
+        grid.resize(grid.getRows(), (int)Math.round(ColumnsSlider.getValue()));
+        CanvasUtils.printGrid(grid, cellSize, gc);
+    }
+
+
+    // Rysowanie komórek na siatce przy pomocy myszy
     void initializeCanvasEventHandler() {
         canvas.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-
-                        int row = (int)((event.getY() - event.getY()%cellSize)/cellSize);
-                        int column = (int)((event.getX() - event.getX()%cellSize)/cellSize);
-                        System.out.println(event.getX() + " " + event.getY() + " (" + row + ", " + column + ")");
-
-                        if (row < grid.getRows() && column < grid.getColumns()) {
-                            Cell.State newState = Cell.State.values()[selector.getSelectionModel().getSelectedIndex()];
-                            grid.getCell(row, column).setState(newState);
-                            CanvasUtils.printGrid(grid, cellSize, gc);
-                        } else {
-                            grid.extend(grid.getRows() + 1, grid.getColumns() + 1);
-                            CanvasUtils.printGrid(grid, cellSize, gc);
-                        }
-
+                        handleCanvasDrawing(event);
+                    }
+                });
+        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        handleCanvasDrawing(event);
                     }
                 });
     }
+    void handleCanvasDrawing(MouseEvent event) {
+        int row = (int)((event.getY() - event.getY()%cellSize)/cellSize);
+        int column = (int)((event.getX() - event.getX()%cellSize)/cellSize);
+        System.out.println(event.getX() + " " + event.getY() + " (" + row + ", " + column + ")");
+
+        if (row < grid.getRows() && column < grid.getColumns()) {
+            Cell.State newState = Cell.State.values()[selector.getSelectionModel().getSelectedIndex()];
+            grid.getCell(row, column).setState(newState);
+            CanvasUtils.printGrid(grid, cellSize, gc);
+        }
+    }
+
 
 
     @FXML
@@ -152,6 +176,5 @@ public class Controller {
         }
         simulation = new Simulation(grid);
         CanvasUtils.printGrid(grid, cellSize, gc);
-
     }
 }
