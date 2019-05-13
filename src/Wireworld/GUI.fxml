@@ -102,7 +102,7 @@
                         <Insets />
                      </VBox.margin>
                   </Separator>
-                  <Button fx:id="startButton" disable="true" mnemonicParsing="false" onAction="#startButtonOnAction" prefHeight="50.0" prefWidth="120.0" text="START">
+                  <Button fx:id="startButton" mnemonicParsing="false" onAction="#startButtonOnAction" prefHeight="50.0" prefWidth="120.0" text="START">
                      <font>
                         <Font size="18.0" />
                      </font>

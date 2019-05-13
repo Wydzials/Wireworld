@@ -32,6 +32,7 @@ public class Grid {
     }
 
     public Cell[][] getGridTmp() {
+
         return gridTmp;
     }
 
@@ -75,7 +76,6 @@ public class Grid {
 
         rows = targetRows;
         columns = targetColumns;
-
     }
 
 }

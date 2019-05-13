@@ -15,6 +15,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.Inet4Address;
 
 import static java.lang.System.exit;
 
@@ -63,6 +64,7 @@ public class Controller {
     @FXML
     void simulationSpeedSliderDragged() {
         simulationSpeedLabel.setText("Szybkość symulacji: " + Math.round(simulationSpeedSlider.getValue()));
+        simulation.setDelay(10000/(int)Math.round(simulationSpeedSlider.getValue()));
     }
 
     @FXML
@@ -81,13 +83,15 @@ public class Controller {
         File selectedFile = fileChooser.showOpenDialog(Main.stage);
         if(selectedFile != null) {
             console.setText(console.getText() + "\n Otwieram plik: " + selectedFile.getAbsolutePath());
+            simulation.loadGridFromFile(selectedFile.getPath());
+            grid = simulation.getGrid();
+            CanvasUtils.printGrid(grid, cellSize, gc);
         }
     }
 
     @FXML
     void nextGenerationButtonOnAction() {
         simulation.nextGeneration();
-        grid.printGrid();
         CanvasUtils.printGrid(grid, cellSize, gc);
     }
 
@@ -95,9 +99,13 @@ public class Controller {
     void startButtonOnAction() {
         if(startButton.getText().equals("START")) {
             startButton.setText("STOP");
+            simulation.setPaused(false);
         }
-        else
+        else {
             startButton.setText("START");
+            simulation.setPaused(true);
+        }
+        System.out.println(simulation.isPaused());
     }
 
     @FXML
@@ -144,9 +152,9 @@ public class Controller {
     void handleCanvasDrawing(MouseEvent event) {
         int row = (int)((event.getY() - event.getY()%cellSize)/cellSize);
         int column = (int)((event.getX() - event.getX()%cellSize)/cellSize);
-        System.out.println(event.getX() + " " + event.getY() + " (" + row + ", " + column + ")");
+        //System.out.println(event.getX() + " " + event.getY() + " (" + row + ", " + column + ")");
 
-        if (row < grid.getRows() && column < grid.getColumns()) {
+        if (row < grid.getRows() && column < grid.getColumns() && row >= 0 && column >= 0) {
             Cell.State newState = Cell.State.values()[selector.getSelectionModel().getSelectedIndex()];
             grid.getCell(row, column).setState(newState);
             CanvasUtils.printGrid(grid, cellSize, gc);
@@ -174,6 +182,7 @@ public class Controller {
         }catch(BlankFileException e) {
             System.err.println("Podano pusty plik");
         }
+
         simulation = new Simulation(grid);
         CanvasUtils.printGrid(grid, cellSize, gc);
     }
