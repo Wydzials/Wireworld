@@ -78,4 +78,10 @@ public class Grid {
         columns = targetColumns;
     }
 
+    public void clear() {
+        for (int i = 0; i < columns; i++)
+            for (int j = 0; j < rows; j++)
+                grid[j][i] = new Cell();
+    }
+
 }

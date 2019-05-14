@@ -53,6 +53,9 @@ public class Controller {
     private Slider RowsSlider;
     @FXML
     private Slider ColumnsSlider;
+    @FXML
+    private MenuItem ClearMenu;
+
 
     public GraphicsContext gc;
 
@@ -85,15 +88,22 @@ public class Controller {
             console.setText(console.getText() + "\n Otwieram plik: " + selectedFile.getAbsolutePath());
             simulation.loadGridFromFile(selectedFile.getPath());
             grid = simulation.getGrid();
-            CanvasUtils.printGrid(grid, cellSize, gc);
+            refresh();
         }
+    }
+
+    @FXML
+    void clearMenuOnAction() {
+        simulation.clear();
+        refresh();
     }
 
     @FXML
     void nextGenerationButtonOnAction() {
         simulation.nextGeneration();
-        CanvasUtils.printGrid(grid, cellSize, gc);
+        refresh();
     }
+
 
     @FXML
     void startButtonOnAction() {
@@ -105,13 +115,12 @@ public class Controller {
             startButton.setText("START");
             simulation.setPaused(true);
         }
-        System.out.println(simulation.isPaused());
     }
 
     @FXML
     void zoomSliderDragged() {
         cellSize = ZoomSlider.getValue()* 10;
-        CanvasUtils.printGrid(grid, cellSize, gc);
+        refresh();
     }
 
     @FXML
@@ -121,14 +130,14 @@ public class Controller {
     @FXML
     void RowsSliderDragged() {
         grid.resize((int)Math.round(RowsSlider.getValue()), grid.getColumns());
-        CanvasUtils.printGrid(grid, cellSize, gc);
+        refresh();
 
     }
 
     @FXML
     void ColumnsSliderDragged() {
         grid.resize(grid.getRows(), (int)Math.round(ColumnsSlider.getValue()));
-        CanvasUtils.printGrid(grid, cellSize, gc);
+        refresh();
     }
 
 
@@ -157,10 +166,14 @@ public class Controller {
         if (row < grid.getRows() && column < grid.getColumns() && row >= 0 && column >= 0) {
             Cell.State newState = Cell.State.values()[selector.getSelectionModel().getSelectedIndex()];
             grid.getCell(row, column).setState(newState);
-            CanvasUtils.printGrid(grid, cellSize, gc);
+            refresh();
         }
     }
 
+    void refresh() {
+        topText.setText("Generacja: " + simulation.getCurrentGeneration() + " | Populacja: " + simulation.getPopulation());
+        CanvasUtils.printGrid(grid, cellSize, gc);
+    }
 
 
     @FXML
@@ -184,6 +197,6 @@ public class Controller {
         }
 
         simulation = new Simulation(grid);
-        CanvasUtils.printGrid(grid, cellSize, gc);
+        refresh();
     }
 }

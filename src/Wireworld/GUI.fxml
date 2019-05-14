@@ -35,6 +35,7 @@
             <items>
               <MenuItem mnemonicParsing="false" text="Start" />
                   <MenuItem mnemonicParsing="false" text="Stop" />
+                  <MenuItem fx:id="ClearMenu" mnemonicParsing="false" onAction="#clearMenuOnAction" text="Wyczyść" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Informacje">
