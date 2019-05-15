@@ -14,7 +14,7 @@ public class Main extends Application{
     @Override
     public void start(Stage stage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("GUI.fxml"));
-        stage.setTitle("Wireworld");
+        stage.setTitle("Elektryka prąd nie tyka | Symulator Wireworld");
         stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.setMinHeight(600);

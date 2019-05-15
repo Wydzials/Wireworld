@@ -2,21 +2,23 @@ package Wireworld;
 
 import java.io.IOException;
 
-public class Simulation extends Thread implements ISimulation{
+public class Simulation extends Thread{
 
     private Grid grid;
+    private ICellChecker cellChecker;
     private int currentGeneration = 1;
-    private int targetGenerations;
     private int population;
     private int delay;
     private boolean isPaused;
 
-    public Simulation(Grid grid) {
+    public Simulation(Grid grid, ICellChecker cellChecker) {
         this.grid = grid;
+        this.cellChecker = cellChecker;
         isPaused = true;
     }
     public Simulation(String path) {
         loadGridFromFile(path);
+        this.cellChecker = cellChecker;
         isPaused = true;
     }
 
@@ -43,17 +45,16 @@ public class Simulation extends Thread implements ISimulation{
     public void nextGeneration() {
         for(int k = 0; k<grid.getRows(); k++){
             for(int l = 0; l<grid.getColumns(); l++){
-                grid.getGridTmp()[k][l].setState(CellChecker.checkCell(k,l,grid));
+                grid.getGridTmp()[k][l].setState(cellChecker.checkCell(k,l,grid));
             }
         }
         grid.copyGrid();
         currentGeneration++;
-        targetGenerations--;
     }
 
     public void loadGridFromFile(String path) {
         try {
-            grid = fileReader.readFile(path);
+            grid = FileIO.readFile(path, cellChecker);
         } catch (IOException e) {
             System.err.println("Nie istnieje podany plik");
         } catch (BlankFileException e) {
@@ -70,7 +71,7 @@ public class Simulation extends Thread implements ISimulation{
         population = 0;
         for (int i = 0; i < grid.getRows(); i++)
             for (int j = 0; j < grid.getColumns(); j++)
-                if (grid.getCell(i, j).getState() != Cell.State.EMPTY)
+                if (grid.getCell(i, j).getState() != 0)
                     population++;
     }
 

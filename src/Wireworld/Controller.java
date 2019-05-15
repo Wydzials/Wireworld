@@ -7,15 +7,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
 
 import java.io.File;
 import java.io.IOException;
-import java.net.Inet4Address;
 
 import static java.lang.System.exit;
 
@@ -82,7 +79,12 @@ public class Controller {
     @FXML
     void openFileMenuOnAction() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Otwórz plik z planszą");
+        fileChooser.setTitle("Wczytaj plik z planszą");
+        fileChooser.setInitialDirectory(new File("data"));
+
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Pliki tekstowe (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
         File selectedFile = fileChooser.showOpenDialog(Main.stage);
         if(selectedFile != null) {
             console.setText(console.getText() + "\n Otwieram plik: " + selectedFile.getAbsolutePath());
@@ -96,6 +98,31 @@ public class Controller {
     void clearMenuOnAction() {
         simulation.clear();
         refresh();
+    }
+
+    @FXML
+    void newFileMenuOnAction () {
+        simulation.clear();
+        simulation.getGrid().resize(15, 25);
+        ZoomSlider.setValue((ZoomSlider.getMax() + ZoomSlider.getMin())/2);
+        zoomSliderDragged();
+        refresh();
+    }
+
+    @FXML
+    void saveFileMenuOnAction () {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Zapisz plik z planszą");
+        fileChooser.setInitialDirectory(new File("data"));
+        fileChooser.setInitialFileName("wireworld");
+
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Pliki tekstowe (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File file = fileChooser.showSaveDialog(Main.stage);
+        if (file != null) {
+            FileIO.writeFile(simulation.getGrid(), file.getPath());
+        }
     }
 
     @FXML
@@ -164,8 +191,7 @@ public class Controller {
         //System.out.println(event.getX() + " " + event.getY() + " (" + row + ", " + column + ")");
 
         if (row < grid.getRows() && column < grid.getColumns() && row >= 0 && column >= 0) {
-            Cell.State newState = Cell.State.values()[selector.getSelectionModel().getSelectedIndex()];
-            grid.getCell(row, column).setState(newState);
+            grid.getCell(row, column).setState(selector.getSelectionModel().getSelectedIndex());
             refresh();
         }
     }
@@ -180,23 +206,26 @@ public class Controller {
     void initialize() {
         Main.controller = this;
         selector.getItems().addAll("Pusta komórka", "Głowa elektronu", "Ogon elektronu", "Przewodnik");
-        selector.getSelectionModel().select(0);
+        selector.getSelectionModel().select(selector.getItems().size() - 1);
         cellSize = ZoomSlider.getValue()* 10;
 
         centerVBox.setMinSize(1200, 750);
+        ZoomSlider.setValue((ZoomSlider.getMax() + ZoomSlider.getMin())/2);
 
         gc = canvas.getGraphicsContext2D();
         initializeCanvasEventHandler();
 
+
+        ICellChecker cellChecker = new WireworldCellChecker();
         try {
-            grid = fileReader.readFile("data/dane3.txt");
+            grid = FileIO.readFile("data/dane3.txt", cellChecker);
         }catch (IOException e){
             System.err.println("Nie istnieje podany plik");
         }catch(BlankFileException e) {
             System.err.println("Podano pusty plik");
         }
 
-        simulation = new Simulation(grid);
+        simulation = new Simulation(grid, cellChecker);
         refresh();
     }
 }

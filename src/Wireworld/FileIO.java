@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class fileReader {
-    public static Grid readFile(String path) throws IOException, IllegalArgumentException, BlankFileException{
+public class FileIO {
+    public static Grid readFile(String path, ICellChecker cellChecker) throws IOException, IllegalArgumentException, BlankFileException{
 
         //Rozpoczynam wczytanie pliku od odczytania pierwszej lini poprzez użycie funkcji readFirstLine, zapisuje wymiary siatki
         BufferedReader bf = new BufferedReader(new FileReader(path));
@@ -15,7 +15,7 @@ public class fileReader {
         int sizeY = sizeXY[0];
         int sizeX = sizeXY[1];
         //Rozpoczynam odczyt siatki
-        Cell[][] grid = new Cell[sizeY][sizeX];
+        AbstractCell[][] grid = new AbstractCell[sizeY][sizeX];
         int numOfLine = 0;
 
         while((lineContainer = bf.readLine()) != null){
@@ -26,8 +26,12 @@ public class fileReader {
             if(gridLine.length != sizeX)
                 throw new IllegalArgumentException();
             for(int i=0; i < sizeX; i++) { //i staje się numerem kolumny
-                if(Character.isDigit( (gridLine[i]).charAt(0) ) )
-                grid[numOfLine][i] = new Cell(Character.getNumericValue(gridLine[i].charAt(0)));
+                if(Character.isDigit( (gridLine[i]).charAt(0) ) ) {
+                    AbstractCell cell = cellChecker.makeNewCell();
+                    cell.setState(Character.getNumericValue(gridLine[i].charAt(0)));
+                    grid[numOfLine][i] = cell;
+                    //grid[numOfLine][i] = new WireworldCell(Character.getNumericValue(gridLine[i].charAt(0)));
+                }
             }
             numOfLine++;
         }
@@ -48,5 +52,9 @@ public class fileReader {
             return sizeXY;
         }else
             throw new BlankFileException(); //Jeśli nie istnieje pierwsza linia wyrzuci błąd
+    }
+
+    public static void writeFile(Grid grid, String path) {
+        // TO DO
     }
 }

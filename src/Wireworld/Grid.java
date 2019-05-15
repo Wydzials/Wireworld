@@ -1,21 +1,20 @@
 package Wireworld;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
-
 public class Grid {
+
     private int columns;
     private int rows;
-    private Cell[][] grid;
-    private Cell[][] gridTmp;
+    private AbstractCell[][] grid;
+    private AbstractCell[][] gridTmp;
 
-    public Grid(int columns, int rows, Cell[][] grid){
+    public Grid(int columns, int rows, AbstractCell[][] grid){
         this.grid = grid;
         this.columns = columns;
         this.rows = rows;
-        gridTmp = new Cell[rows][columns];
+        gridTmp = new AbstractCell[rows][columns];
         for(int i = 0; i < columns; i++)
             for(int j = 0; j < rows; j++) {
-                gridTmp[j][i] = new Cell();
+                gridTmp[j][i] = grid[0][0].clone();
             }
     }
 
@@ -27,16 +26,13 @@ public class Grid {
         return rows;
     }
 
-    public Cell[][] getGrid() {
+    public AbstractCell[][] getGrid() {
         return grid;
     }
 
-    public Cell[][] getGridTmp() {
+    public AbstractCell[][] getGridTmp() { return gridTmp; }
 
-        return gridTmp;
-    }
-
-    public Cell getCell(int row, int column) {
+    public AbstractCell getCell(int row, int column) {
         return grid[row][column];
     }
 
@@ -58,16 +54,16 @@ public class Grid {
     public void resize(int targetRows, int targetColumns) {
         if(targetRows == rows && targetColumns == columns)
             return;
-        Cell[][] newGrid = new Cell[targetRows][targetColumns];
-        Cell[][] newGridTmp = new Cell[targetRows][targetColumns];
+        AbstractCell[][] newGrid = new AbstractCell[targetRows][targetColumns];
+        AbstractCell[][] newGridTmp = new AbstractCell[targetRows][targetColumns];
 
         for(int row = 0; row < targetRows; row++) {
             for (int column = 0; column < targetColumns; column++) {
                 if (row < rows && column < columns)
-                    newGrid[row][column] = new Cell(getCell(row, column).getState());
+                    newGrid[row][column] = grid[row][column].clone();
                 else
-                    newGrid[row][column] = new Cell();
-                newGridTmp[row][column] = new Cell();
+                    newGrid[row][column] = grid[0][0].emptyClone();
+                newGridTmp[row][column] = grid[0][0].emptyClone();
             }
         }
 
@@ -81,7 +77,7 @@ public class Grid {
     public void clear() {
         for (int i = 0; i < columns; i++)
             for (int j = 0; j < rows; j++)
-                grid[j][i] = new Cell();
+                grid[j][i] = grid[0][0].emptyClone();
     }
 
 }
