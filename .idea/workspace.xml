@@ -3,33 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/dane.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/dane2.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/dane3.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Wireworld/Wireworld/BlankFileException.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Wireworld/Wireworld/CanvasUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Wireworld/Wireworld/Controller$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Wireworld/Wireworld/Controller$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Wireworld/Wireworld/Controller.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Wireworld/Wireworld/GUI.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Wireworld/Wireworld/Grid.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Wireworld/Wireworld/ICellChecker.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Wireworld/Wireworld/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Wireworld/Wireworld/Simulation.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Wireworld/Wireworld/icon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/AbstractCell.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/BlankFileException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/CanvasUtils.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/Controller.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/FileIO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/GUI.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/Grid.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/ICellChecker.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/Simulation.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/WireworldCell.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/WireworldCellChecker.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Wireworld/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Wireworld/Core/Simulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Wireworld/Core/Simulation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Wireworld/GUI/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Wireworld/GUI/Controller.java" afterDir="false" />
     </list>
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -104,44 +79,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Wireworld/Core/GameOfLife/GameOfLifeCellChecker.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" column="21" lean-forward="true" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#822#823#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Wireworld/Core/GameOfLife/GameOfLifeCell.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Wireworld/Core/WireWorld/WireworldCellChecker.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="2" column="28" lean-forward="true" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Wireworld/Core/Simulation.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="8" column="22" lean-forward="true" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+            <state relative-caret-position="215">
+              <caret line="89" selection-start-line="89" selection-end-line="89" />
             </state>
           </provider>
         </entry>
@@ -149,8 +90,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Wireworld/GUI/Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="230" column="34" lean-forward="true" selection-start-line="230" selection-start-column="34" selection-end-line="230" selection-end-column="34" />
+            <state relative-caret-position="337">
+              <caret line="214" lean-forward="true" selection-start-line="214" selection-end-line="214" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -159,12 +100,13 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Wireworld/Core/WireWorld/WireworldCell.java">
+        <entry file="file://$PROJECT_DIR$/src/Wireworld/GUI/GUI.fxml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+            <state relative-caret-position="434">
+              <caret line="111" column="19" lean-forward="true" selection-start-line="111" selection-start-column="19" selection-end-line="111" selection-end-column="19" />
             </state>
           </provider>
+          <provider editor-type-id="JavaFX-Scene-Builder" />
         </entry>
       </file>
     </leaf>
@@ -256,9 +198,9 @@
         <option value="$PROJECT_DIR$/src/Wireworld/Core/GameOfLifeCellChecker.java" />
         <option value="$PROJECT_DIR$/src/Wireworld/Core/GameOfLife/GameOfLifeCell.java" />
         <option value="$PROJECT_DIR$/src/Wireworld/Core/WireworldSimulation.java" />
-        <option value="$PROJECT_DIR$/src/Wireworld/Core/Simulation.java" />
         <option value="$PROJECT_DIR$/src/Wireworld/Core/GameOfLife/GameOfLifeCellChecker.java" />
         <option value="$PROJECT_DIR$/data/GameOfLifeData/dane.txt" />
+        <option value="$PROJECT_DIR$/src/Wireworld/Core/Simulation.java" />
         <option value="$PROJECT_DIR$/src/Wireworld/GUI/Controller.java" />
       </list>
     </option>
@@ -304,6 +246,20 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Wireworld" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Wireworld" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Wireworld" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Wireworld" type="462c0819:PsiDirectoryNode" />
+              <item name="Core" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Wireworld" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Wireworld" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Wireworld" type="462c0819:PsiDirectoryNode" />
+              <item name="GUI" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -325,7 +281,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1558004618591" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1558009555170" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
     <property name="create.test.in.the.same.root" value="true" />
@@ -639,13 +595,13 @@
       <window_info id="UI Designer" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.26628897" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.26628897" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3937677" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
       <window_info anchor="bottom" id="Application Servers" order="7" />
-      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.3286119" />
       <window_info anchor="bottom" id="Problems" order="9" />
       <window_info anchor="bottom" id="Changes" order="10" />
       <window_info anchor="bottom" id="Profiler" order="11" />
@@ -701,14 +657,6 @@
     <entry file="file://$PROJECT_DIR$/src/Wireworld/ICell.java" />
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_211/src.zip!/java/lang/Thread.java" />
     <entry file="file://$PROJECT_DIR$/src/Wireworld/IState.java" />
-    <entry file="file://$PROJECT_DIR$/src/Wireworld/GUI/GUI.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1624">
-          <caret line="111" column="19" lean-forward="true" selection-start-line="111" selection-start-column="19" selection-end-line="111" selection-end-column="19" />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_211/src.zip!/java/lang/Object.java" />
     <entry file="file://$PROJECT_DIR$/src/Wireworld/State.java" />
     <entry file="file://$PROJECT_DIR$/src/Wireworld/AbstractSimulation.java" />
@@ -763,9 +711,6 @@
           </folding>
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/WireworldData/dane.txt">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Wireworld/Core/Grid.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -866,24 +811,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Wireworld/Core/Simulation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="8" column="22" lean-forward="true" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/data/WireworldData/dane.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/data/GameOfLifeData/dane.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="15" selection-start-line="7" selection-start-column="15" selection-end-line="7" selection-end-column="15" />
+        <state>
+          <caret column="3" selection-start-column="3" selection-end-column="3" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Wireworld/Core/Simulation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="89" selection-start-line="89" selection-end-line="89" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Wireworld/GUI/GUI.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="434">
+          <caret line="111" column="19" lean-forward="true" selection-start-line="111" selection-start-column="19" selection-end-line="111" selection-end-column="19" />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Wireworld/GUI/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="230" column="34" lean-forward="true" selection-start-line="230" selection-start-column="34" selection-end-line="230" selection-end-column="34" />
+        <state relative-caret-position="337">
+          <caret line="214" lean-forward="true" selection-start-line="214" selection-end-line="214" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

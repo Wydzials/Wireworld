@@ -1,6 +1,7 @@
 package Wireworld.Core;
 
 import Wireworld.Core.*;
+import Wireworld.GUI.Controller;
 
 import java.io.IOException;
 
@@ -80,5 +81,18 @@ public class Simulation extends Thread {
     public void clear() {
         grid.clear();
         currentGeneration = 1;
+    }
+
+    @Override
+    public void run() {
+        while(!isPaused){
+            nextGeneration();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

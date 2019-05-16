@@ -140,6 +140,7 @@ public class Controller {
         if(startButton.getText().equals("START")) {
             startButton.setText("STOP");
             simulation.setPaused(false);
+            simulation.start();
         }
         else {
             startButton.setText("START");
