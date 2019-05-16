@@ -1,5 +1,6 @@
-package Wireworld;
+package Wireworld.Core.WireWorld;
 
+import Wireworld.Core.AbstractCell;
 import javafx.scene.paint.Color;
 
 public class WireworldCell extends AbstractCell {

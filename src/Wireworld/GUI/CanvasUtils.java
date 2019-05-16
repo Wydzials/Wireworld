@@ -1,5 +1,8 @@
-package Wireworld;
+package Wireworld.GUI;
 
+import Wireworld.Core.AbstractCell;
+import Wireworld.Core.Grid;
+import Wireworld.Core.Main;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 

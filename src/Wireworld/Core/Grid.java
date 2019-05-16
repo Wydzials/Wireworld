@@ -1,4 +1,4 @@
-package Wireworld;
+package Wireworld.Core;
 
 public class Grid {
 
@@ -42,13 +42,16 @@ public class Grid {
                 grid[i][j].setState(gridTmp[i][j].getState());
     }
 
-    public void printGrid(){
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
         for(int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++)
-                System.out.print(grid[i][j] + " ");
-            System.out.println();
+                sb.append(grid[i][j] + " ");
+            sb.append('\n');
         }
-        System.out.println();
+        sb.append('\n');
+        return sb.toString();
     }
 
     public void resize(int targetRows, int targetColumns) {

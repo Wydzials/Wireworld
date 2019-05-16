@@ -1,5 +1,8 @@
-package Wireworld;
+package Wireworld.GUI;
 
+import Wireworld.Core.*;
+import Wireworld.Core.GameOfLife.GameOfLifeCellChecker;
+import Wireworld.Core.WireWorld.WireworldCellChecker;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -216,9 +219,9 @@ public class Controller {
         initializeCanvasEventHandler();
 
 
-        ICellChecker cellChecker = new WireworldCellChecker();
+        ICellChecker cellChecker = new GameOfLifeCellChecker();
         try {
-            grid = FileIO.readFile("data/dane3.txt", cellChecker);
+            grid = FileIO.readFile("data/GameOfLifeData/dane.txt", cellChecker);
         }catch (IOException e){
             System.err.println("Nie istnieje podany plik");
         }catch(BlankFileException e) {

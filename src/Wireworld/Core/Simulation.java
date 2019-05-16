@@ -1,8 +1,10 @@
-package Wireworld;
+package Wireworld.Core;
+
+import Wireworld.Core.*;
 
 import java.io.IOException;
 
-public class Simulation extends Thread{
+public class Simulation extends Thread {
 
     private Grid grid;
     private ICellChecker cellChecker;

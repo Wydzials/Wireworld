@@ -1,4 +1,8 @@
-package Wireworld;
+package Wireworld.Core.WireWorld;
+
+import Wireworld.Core.AbstractCell;
+import Wireworld.Core.Grid;
+import Wireworld.Core.ICellChecker;
 
 public class WireworldCellChecker implements ICellChecker {
 

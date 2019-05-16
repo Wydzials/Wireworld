@@ -1,4 +1,4 @@
-package Wireworld;
+package Wireworld.Core;
 
 import javafx.scene.paint.Color;
 
