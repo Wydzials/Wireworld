@@ -7,10 +7,10 @@ public class Grid {
     private AbstractCell[][] grid;
     private AbstractCell[][] gridTmp;
 
-    public Grid(int columns, int rows, AbstractCell[][] grid){
+    public Grid(AbstractCell[][] grid){
         this.grid = grid;
-        this.columns = columns;
-        this.rows = rows;
+        this.columns = grid[0].length;
+        this.rows = grid.length;
         gridTmp = new AbstractCell[rows][columns];
         for(int i = 0; i < columns; i++)
             for(int j = 0; j < rows; j++) {

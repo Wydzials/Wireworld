@@ -88,7 +88,7 @@ public class Simulation extends Thread {
         while(!isPaused){
             nextGeneration();
             try {
-                Thread.sleep(100);
+                Thread.sleep(delay);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -1,7 +1,6 @@
 package Wireworld.Core.GameOfLife;
 
 import Wireworld.Core.AbstractCell;
-import Wireworld.Core.WireWorld.WireworldCell;
 import javafx.scene.paint.Color;
 
 public class GameOfLifeCell extends AbstractCell {
@@ -18,12 +17,12 @@ public class GameOfLifeCell extends AbstractCell {
 
     @Override
     public AbstractCell clone() {
-        return new WireworldCell(state);
+        return new GameOfLifeCell(state);
     }
 
     @Override
     public AbstractCell emptyClone() {
-        return new WireworldCell();
+        return new GameOfLifeCell();
     }
 
     @Override

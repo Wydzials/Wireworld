@@ -3,6 +3,7 @@ package Wireworld.GUI;
 import Wireworld.Core.*;
 import Wireworld.Core.GameOfLife.GameOfLifeCellChecker;
 import Wireworld.Core.WireWorld.WireworldCellChecker;
+import com.sun.rowset.internal.Row;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -34,7 +35,9 @@ public class Controller {
     @FXML
     private MenuItem exitMenu;
     @FXML
-    private ComboBox selector;
+    private ComboBox CellSelector;
+    @FXML
+    private ComboBox SimulationSelector;
     @FXML
     private Text console;
     @FXML
@@ -76,7 +79,15 @@ public class Controller {
     }
 
     @FXML
-    void selectorOnAction(){
+    void cellSelectorOnAction() {
+    }
+
+    @FXML
+    void simulationSelectorOnAction() {
+        if(SimulationSelector.getSelectionModel().getSelectedIndex() == 0)
+            switchToWireworld();
+        else if(SimulationSelector.getSelectionModel().getSelectedIndex() == 1)
+            switchToGameOfLife();
     }
 
     @FXML
@@ -129,6 +140,16 @@ public class Controller {
     }
 
     @FXML
+    void gameOfLifeMenuOnAction() {
+        switchToGameOfLife();
+    }
+
+    @FXML
+    void wireworldMenuOnAction() {
+        switchToWireworld();
+    }
+
+    @FXML
     void nextGenerationButtonOnAction() {
         simulation.nextGeneration();
         refresh();
@@ -140,7 +161,6 @@ public class Controller {
         if(startButton.getText().equals("START")) {
             startButton.setText("STOP");
             simulation.setPaused(false);
-            simulation.start();
         }
         else {
             startButton.setText("START");
@@ -195,7 +215,7 @@ public class Controller {
         //System.out.println(event.getX() + " " + event.getY() + " (" + row + ", " + column + ")");
 
         if (row < grid.getRows() && column < grid.getColumns() && row >= 0 && column >= 0) {
-            grid.getCell(row, column).setState(selector.getSelectionModel().getSelectedIndex());
+            grid.getCell(row, column).setState(CellSelector.getSelectionModel().getSelectedIndex());
             refresh();
         }
     }
@@ -209,8 +229,10 @@ public class Controller {
     @FXML
     void initialize() {
         Main.controller = this;
-        selector.getItems().addAll("Pusta komórka", "Głowa elektronu", "Ogon elektronu", "Przewodnik");
-        selector.getSelectionModel().select(selector.getItems().size() - 1);
+
+        SimulationSelector.getItems().addAll("Wireworld", "Gra w życie");
+
+
         cellSize = ZoomSlider.getValue()* 10;
 
         centerVBox.setMinSize(1200, 750);
@@ -218,16 +240,30 @@ public class Controller {
 
         gc = canvas.getGraphicsContext2D();
         initializeCanvasEventHandler();
+        switchToWireworld();
+        zoomSliderDragged();
 
+    }
 
+    void switchToWireworld() {
+        ICellChecker cellChecker = new WireworldCellChecker();
+        grid = FileIO.createEmpty(15, 25, cellChecker);
+        SimulationSelector.getSelectionModel().select(0);
+
+        CellSelector.getItems().setAll("Pusta komórka", "Głowa elektronu", "Ogon elektronu", "Przewodnik");
+        CellSelector.getSelectionModel().select(CellSelector.getItems().size() - 1);
+
+        simulation = new Simulation(grid, cellChecker);
+        refresh();
+    }
+
+    void switchToGameOfLife() {
         ICellChecker cellChecker = new GameOfLifeCellChecker();
-        try {
-            grid = FileIO.readFile("data/GameOfLifeData/dane.txt", cellChecker);
-        }catch (IOException e){
-            System.err.println("Nie istnieje podany plik");
-        }catch(BlankFileException e) {
-            System.err.println("Podano pusty plik");
-        }
+        grid = FileIO.createEmpty(15, 25, cellChecker);
+
+        CellSelector.getItems().setAll("Martwa komórka", "Żywa komórka");
+        CellSelector.getSelectionModel().select(CellSelector.getItems().size() - 1);
+        SimulationSelector.getSelectionModel().select(1);
 
         simulation = new Simulation(grid, cellChecker);
         refresh();

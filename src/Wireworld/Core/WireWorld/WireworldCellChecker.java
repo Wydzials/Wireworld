@@ -28,7 +28,7 @@ public class WireworldCellChecker implements ICellChecker {
         }
     }
 
-    public AbstractCell makeNewCell() {
+    public AbstractCell createNewCell() {
         return new WireworldCell();
     }
 }

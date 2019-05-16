@@ -22,7 +22,7 @@ public class GameOfLifeCellChecker implements ICellChecker {
     }
 
     @Override
-    public AbstractCell makeNewCell() {
+    public AbstractCell createNewCell() {
         return new GameOfLifeCell();
     }
 }

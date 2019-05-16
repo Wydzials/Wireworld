@@ -24,7 +24,11 @@ public abstract class AbstractCell implements Cloneable {
     }
 
     public Color getColor() {
+        if(state >= colors.length)
+            state = colors.length - 1;
+
         return colors[state];
+
     }
 
     @Override

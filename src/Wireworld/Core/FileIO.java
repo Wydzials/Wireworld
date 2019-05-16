@@ -25,7 +25,7 @@ public class FileIO {
                 throw new IllegalArgumentException();
             for (int i = 0; i < sizeX; i++) { //i staje się numerem kolumny
                 if (Character.isDigit((gridLine[i]).charAt(0))) {
-                    AbstractCell cell = cellChecker.makeNewCell();
+                    AbstractCell cell = cellChecker.createNewCell();
                     cell.setState(Character.getNumericValue(gridLine[i].charAt(0)));
                     grid[numOfLine][i] = cell;
                     //grid[numOfLine][i] = new WireworldCell(Character.getNumericValue(gridLine[i].charAt(0)));
@@ -33,7 +33,8 @@ public class FileIO {
             }
             numOfLine++;
         }
-        return new Grid(sizeX, sizeY, grid);
+        bf.close();
+        return new Grid(grid);
     }
 
     public static int[] readFirstLine(BufferedReader bf) throws IOException, BlankFileException, IllegalArgumentException {
@@ -55,6 +56,7 @@ public class FileIO {
     public static void writeFile(Grid grid, String path) {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path));
+            bufferedWriter.write(grid.getRows() + " " + grid.getColumns() + '\n');
 
             for (int row = 0; row < grid.getRows(); row++) {
                 for (int col = 0; col < grid.getColumns(); col++) {
@@ -62,8 +64,20 @@ public class FileIO {
                 }
                 bufferedWriter.append('\n');
             }
+            bufferedWriter.close();
         }catch(IOException e) {
             System.out.println("Nie udało się utworzyć pliku");
         }
+    }
+
+    public static Grid createEmpty(int rows, int columns, ICellChecker cellChecker) {
+        AbstractCell[][] grid = new AbstractCell[rows][columns];
+
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < columns; j++) {
+                grid[i][j] = cellChecker.createNewCell();
+            }
+        }
+        return new Grid(grid);
     }
 }
