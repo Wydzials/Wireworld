@@ -7,11 +7,9 @@ public class WireworldCell extends AbstractCell {
 
     public WireworldCell() {
         super();
-        setColors();
     }
     public WireworldCell(int state) {
         super(state);
-        setColors();
     }
 
     protected void setColors() {

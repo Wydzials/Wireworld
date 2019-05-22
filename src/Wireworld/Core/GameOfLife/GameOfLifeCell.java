@@ -7,12 +7,10 @@ public class GameOfLifeCell extends AbstractCell {
 
     public GameOfLifeCell(){
         super();
-        setColors();
     }
 
     public GameOfLifeCell(int state){
         super(state);
-        setColors();
     }
 
     @Override

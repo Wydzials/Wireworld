@@ -1,11 +1,10 @@
 package Wireworld.Core;
 
-import Wireworld.Core.*;
 import Wireworld.GUI.Controller;
 
 import java.io.IOException;
 
-public class Simulation extends Thread {
+public class Simulation {
 
     private Grid grid;
     private ICellChecker cellChecker;
@@ -13,12 +12,15 @@ public class Simulation extends Thread {
     private int population;
     private int delay;
     private boolean isPaused;
+    private Controller controller;
 
-    public Simulation(Grid grid, ICellChecker cellChecker) {
+    public Simulation(Grid grid, ICellChecker cellChecker, Controller controller) {
         this.grid = grid;
         this.cellChecker = cellChecker;
         isPaused = true;
+        this.controller = controller;
     }
+
     public Simulation(String path) {
         loadGridFromFile(path);
         this.cellChecker = cellChecker;
@@ -38,17 +40,27 @@ public class Simulation extends Thread {
         return population;
     }
 
-    public int getDelay() { return delay; }
-    public void setDelay(int delay) { this.delay = delay; }
+    public int getDelay() {
+        return delay;
+    }
 
-    public boolean isPaused() { return isPaused; }
-    public void setPaused(boolean paused) { isPaused = paused; }
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public void setPaused(boolean paused) {
+        isPaused = paused;
+    }
 
 
-    public void nextGeneration() {
-        for(int k = 0; k<grid.getRows(); k++){
-            for(int l = 0; l<grid.getColumns(); l++){
-                grid.getGridTmp()[k][l].setState(cellChecker.checkCell(k,l,grid));
+    public synchronized void nextGeneration() {
+        for (int k = 0; k < grid.getRows(); k++) {
+            for (int l = 0; l < grid.getColumns(); l++) {
+                grid.getGridTmp()[k][l].setState(cellChecker.checkCell(k, l, grid));
             }
         }
         grid.copyGrid();
@@ -81,18 +93,5 @@ public class Simulation extends Thread {
     public void clear() {
         grid.clear();
         currentGeneration = 1;
-    }
-
-    @Override
-    public void run() {
-        while(!isPaused){
-            nextGeneration();
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 }

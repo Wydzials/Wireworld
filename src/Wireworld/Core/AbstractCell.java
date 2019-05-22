@@ -9,10 +9,12 @@ public abstract class AbstractCell implements Cloneable {
 
     public AbstractCell() {
         state = 0;
+        setColors();
     }
 
     public AbstractCell(int state) {
         setState(state);
+        setColors();
     }
 
     public int getState() {
@@ -29,6 +31,10 @@ public abstract class AbstractCell implements Cloneable {
 
         return colors[state];
 
+    }
+
+    public int getMaxState() {
+        return colors.length;
     }
 
     @Override

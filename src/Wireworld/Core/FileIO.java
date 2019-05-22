@@ -9,6 +9,9 @@ public class FileIO {
         BufferedReader bf = new BufferedReader(new FileReader(path));
         String lineContainer;
 
+        AbstractCell tmp = cellChecker.createNewCell();
+        int maxState = tmp.getMaxState() - 1;
+
         int[] sizeXY = readFirstLine(bf);
         int sizeY = sizeXY[0];
         int sizeX = sizeXY[1];
@@ -25,11 +28,16 @@ public class FileIO {
                 throw new IllegalArgumentException();
             for (int i = 0; i < sizeX; i++) { //i staje się numerem kolumny
                 if (Character.isDigit((gridLine[i]).charAt(0))) {
+                    if(Integer.parseInt(gridLine[i].charAt(0) + "") > maxState) {
+                        throw new IllegalArgumentException("Błędny stan komórki!");
+                    }
                     AbstractCell cell = cellChecker.createNewCell();
                     cell.setState(Character.getNumericValue(gridLine[i].charAt(0)));
                     grid[numOfLine][i] = cell;
                     //grid[numOfLine][i] = new WireworldCell(Character.getNumericValue(gridLine[i].charAt(0)));
                 }
+                else
+                    throw new IllegalArgumentException("Błędna zawartość pliku!");
             }
             numOfLine++;
         }

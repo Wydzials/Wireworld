@@ -1,4 +1,4 @@
-package Wireworld.Core;
+package Wireworld.GUI;
 
 import Wireworld.GUI.Controller;
 import javafx.application.Application;
@@ -18,7 +18,7 @@ public class Main extends Application{
         stage.setTitle("Elektryka prąd nie tyka | Symulator Wireworld");
         stage.setScene(new Scene(root));
         stage.setResizable(false);
-        stage.setMinHeight(600);
+        stage.setMinHeight(650);
         stage.setMinWidth(800);
         Image icon = new Image(getClass().getResourceAsStream("../GUI/icon.png"));
         stage.getIcons().add(icon);
@@ -32,5 +32,3 @@ public class Main extends Application{
         System.exit(0);
     }
 }
-
-

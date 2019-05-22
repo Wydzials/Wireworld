@@ -3,7 +3,6 @@ package Wireworld.GUI;
 import Wireworld.Core.*;
 import Wireworld.Core.GameOfLife.GameOfLifeCellChecker;
 import Wireworld.Core.WireWorld.WireworldCellChecker;
-import com.sun.rowset.internal.Row;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -16,9 +15,8 @@ import javafx.stage.FileChooser;
 
 
 import java.io.File;
-import java.io.IOException;
-
-import static java.lang.System.exit;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class Controller {
@@ -38,8 +36,8 @@ public class Controller {
     private ComboBox CellSelector;
     @FXML
     private ComboBox SimulationSelector;
-    @FXML
-    private Text console;
+    //@FXML
+    //private Text console;
     @FXML
     private Text topText;
     @FXML
@@ -67,15 +65,22 @@ public class Controller {
 
     public double cellSize;
 
+    private Timer timer;
+    private TimerTask timerTask;
+    private boolean timerPaused;
+    private int delay;
+
     @FXML
     void simulationSpeedSliderDragged() {
         simulationSpeedLabel.setText("Szybkość symulacji: " + Math.round(simulationSpeedSlider.getValue()));
-        simulation.setDelay(10000/(int)Math.round(simulationSpeedSlider.getValue()));
+        delay = 970 - (int)Math.round(simulationSpeedSlider.getValue()) * 9;
+        runTimer();
     }
 
     @FXML
     void exitMenuOnAction() {
-        exit(0);
+        stopSimulation();
+        System.exit(0);
     }
 
     @FXML
@@ -84,6 +89,7 @@ public class Controller {
 
     @FXML
     void simulationSelectorOnAction() {
+        stopSimulation();
         if(SimulationSelector.getSelectionModel().getSelectedIndex() == 0)
             switchToWireworld();
         else if(SimulationSelector.getSelectionModel().getSelectedIndex() == 1)
@@ -92,6 +98,7 @@ public class Controller {
 
     @FXML
     void openFileMenuOnAction() {
+        stopSimulation();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Wczytaj plik z planszą");
         fileChooser.setInitialDirectory(new File("data"));
@@ -101,7 +108,7 @@ public class Controller {
 
         File selectedFile = fileChooser.showOpenDialog(Main.stage);
         if(selectedFile != null) {
-            console.setText(console.getText() + "\n Otwieram plik: " + selectedFile.getAbsolutePath());
+            //console.setText(console.getText() + "\n Otwieram plik: " + selectedFile.getAbsolutePath());
             simulation.loadGridFromFile(selectedFile.getPath());
             grid = simulation.getGrid();
             refresh();
@@ -110,12 +117,14 @@ public class Controller {
 
     @FXML
     void clearMenuOnAction() {
+        stopSimulation();
         simulation.clear();
         refresh();
     }
 
     @FXML
     void newFileMenuOnAction () {
+        stopSimulation();
         simulation.clear();
         simulation.getGrid().resize(15, 25);
         ZoomSlider.setValue((ZoomSlider.getMax() + ZoomSlider.getMin())/2);
@@ -125,6 +134,7 @@ public class Controller {
 
     @FXML
     void saveFileMenuOnAction () {
+        stopSimulation();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Zapisz plik z planszą");
         fileChooser.setInitialDirectory(new File("data"));
@@ -159,12 +169,10 @@ public class Controller {
     @FXML
     void startButtonOnAction() {
         if(startButton.getText().equals("START")) {
-            startButton.setText("STOP");
-            simulation.setPaused(false);
+            startSimulation();
         }
         else {
-            startButton.setText("START");
-            simulation.setPaused(true);
+            stopSimulation();
         }
     }
 
@@ -180,6 +188,7 @@ public class Controller {
 
     @FXML
     void RowsSliderDragged() {
+        stopSimulation();
         grid.resize((int)Math.round(RowsSlider.getValue()), grid.getColumns());
         refresh();
 
@@ -187,10 +196,10 @@ public class Controller {
 
     @FXML
     void ColumnsSliderDragged() {
+        stopSimulation();
         grid.resize(grid.getRows(), (int)Math.round(ColumnsSlider.getValue()));
         refresh();
     }
-
 
     // Rysowanie komórek na siatce przy pomocy myszy
     void initializeCanvasEventHandler() {
@@ -210,19 +219,39 @@ public class Controller {
                 });
     }
     void handleCanvasDrawing(MouseEvent event) {
+        stopSimulation();
         int row = (int)((event.getY() - event.getY()%cellSize)/cellSize);
         int column = (int)((event.getX() - event.getX()%cellSize)/cellSize);
         //System.out.println(event.getX() + " " + event.getY() + " (" + row + ", " + column + ")");
 
         if (row < grid.getRows() && column < grid.getColumns() && row >= 0 && column >= 0) {
             grid.getCell(row, column).setState(CellSelector.getSelectionModel().getSelectedIndex());
-            refresh();
+            CanvasUtils.printCell(row, column, cellSize, gc, grid.getCell(row, column));
+            //refresh();
         }
+        startSimulation();
     }
 
-    void refresh() {
+    public void refresh() {
         topText.setText("Generacja: " + simulation.getCurrentGeneration() + " | Populacja: " + simulation.getPopulation());
         CanvasUtils.printGrid(grid, cellSize, gc);
+    }
+
+    void runTimer() {
+        if(timerTask != null)
+            timerTask.cancel();
+
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                if(!timerPaused) {
+                    simulation.nextGeneration();
+                    refresh();
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 100, delay);
     }
 
 
@@ -232,20 +261,35 @@ public class Controller {
 
         SimulationSelector.getItems().addAll("Wireworld", "Gra w życie");
 
-
         cellSize = ZoomSlider.getValue()* 10;
 
-        centerVBox.setMinSize(1200, 750);
+        centerVBox.setMinSize(1170, 800);
         ZoomSlider.setValue((ZoomSlider.getMax() + ZoomSlider.getMin())/2);
+
+        timerPaused = true;
 
         gc = canvas.getGraphicsContext2D();
         initializeCanvasEventHandler();
         switchToWireworld();
         zoomSliderDragged();
+        simulationSpeedSliderDragged();
+    }
 
+    @FXML
+    void startSimulation() {
+        startButton.setText("STOP");
+        timerPaused = false;
+        runTimer();
+    }
+
+    @FXML
+    void stopSimulation() {
+        startButton.setText("START");
+        timerPaused = true;
     }
 
     void switchToWireworld() {
+        stopSimulation();
         ICellChecker cellChecker = new WireworldCellChecker();
         grid = FileIO.createEmpty(15, 25, cellChecker);
         SimulationSelector.getSelectionModel().select(0);
@@ -253,11 +297,12 @@ public class Controller {
         CellSelector.getItems().setAll("Pusta komórka", "Głowa elektronu", "Ogon elektronu", "Przewodnik");
         CellSelector.getSelectionModel().select(CellSelector.getItems().size() - 1);
 
-        simulation = new Simulation(grid, cellChecker);
+        simulation = new Simulation(grid, cellChecker, this);
         refresh();
     }
 
     void switchToGameOfLife() {
+        stopSimulation();
         ICellChecker cellChecker = new GameOfLifeCellChecker();
         grid = FileIO.createEmpty(15, 25, cellChecker);
 
@@ -265,7 +310,7 @@ public class Controller {
         CellSelector.getSelectionModel().select(CellSelector.getItems().size() - 1);
         SimulationSelector.getSelectionModel().select(1);
 
-        simulation = new Simulation(grid, cellChecker);
+        simulation = new Simulation(grid, cellChecker, this);
         refresh();
     }
 }
