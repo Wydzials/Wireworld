@@ -1,7 +1,5 @@
 package Wireworld.Core;
 
-import Wireworld.GUI.Controller;
-
 import java.io.IOException;
 
 public class Simulation {
@@ -10,28 +8,18 @@ public class Simulation {
     private ICellChecker cellChecker;
     private int currentGeneration = 1;
     private int population;
-    private int delay;
-    private boolean isPaused;
-    private Controller controller;
 
-    public Simulation(Grid grid, ICellChecker cellChecker, Controller controller) {
+    public Simulation(Grid grid, ICellChecker cellChecker) {
         this.grid = grid;
         this.cellChecker = cellChecker;
-        isPaused = true;
-        this.controller = controller;
     }
 
     public Simulation(String path) {
         loadGridFromFile(path);
         this.cellChecker = cellChecker;
-        isPaused = true;
     }
 
     public int getCurrentGeneration() {
-        return currentGeneration;
-    }
-
-    public int getTargetGeneration() {
         return currentGeneration;
     }
 
@@ -39,23 +27,6 @@ public class Simulation {
         countPopulation();
         return population;
     }
-
-    public int getDelay() {
-        return delay;
-    }
-
-    public void setDelay(int delay) {
-        this.delay = delay;
-    }
-
-    public boolean isPaused() {
-        return isPaused;
-    }
-
-    public void setPaused(boolean paused) {
-        isPaused = paused;
-    }
-
 
     public synchronized void nextGeneration() {
         for (int k = 0; k < grid.getRows(); k++) {

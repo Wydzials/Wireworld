@@ -29,23 +29,15 @@ public class Controller {
     @FXML
     private Button NextGenerationButton;
     @FXML
-    private MenuItem openFileMenu;
-    @FXML
-    private MenuItem exitMenu;
-    @FXML
     private ComboBox CellSelector;
     @FXML
     private ComboBox SimulationSelector;
-    //@FXML
-    //private Text console;
     @FXML
     private Text topText;
     @FXML
     public Canvas canvas;
     @FXML
     private VBox centerVBox;
-    @FXML
-    private Label ZoomLabel;
     @FXML
     private Slider ZoomSlider;
     @FXML
@@ -54,20 +46,17 @@ public class Controller {
     private Slider RowsSlider;
     @FXML
     private Slider ColumnsSlider;
-    @FXML
-    private MenuItem ClearMenu;
-
 
     public GraphicsContext gc;
-
     public Simulation simulation;
     public Grid grid;
 
-    public double cellSize;
-
     private Timer timer;
     private TimerTask timerTask;
+
+    public double cellSize;
     private boolean timerPaused;
+    private boolean wasTimerPaused;
     private int delay;
 
     @FXML
@@ -81,10 +70,6 @@ public class Controller {
     void exitMenuOnAction() {
         stopSimulation();
         System.exit(0);
-    }
-
-    @FXML
-    void cellSelectorOnAction() {
     }
 
     @FXML
@@ -108,9 +93,12 @@ public class Controller {
 
         File selectedFile = fileChooser.showOpenDialog(Main.stage);
         if(selectedFile != null) {
-            //console.setText(console.getText() + "\n Otwieram plik: " + selectedFile.getAbsolutePath());
             simulation.loadGridFromFile(selectedFile.getPath());
             grid = simulation.getGrid();
+
+            RowsSlider.setValue(simulation.getGrid().getRows());
+            ColumnsSlider.setValue(simulation.getGrid().getColumns());
+
             refresh();
         }
     }
@@ -126,9 +114,14 @@ public class Controller {
     void newFileMenuOnAction () {
         stopSimulation();
         simulation.clear();
-        simulation.getGrid().resize(15, 25);
+
+        RowsSlider.setValue(15);
+        ColumnsSlider.setValue(25);
+
         ZoomSlider.setValue((ZoomSlider.getMax() + ZoomSlider.getMin())/2);
         zoomSliderDragged();
+
+        simulation.getGrid().resize((int)RowsSlider.getValue(), (int)ColumnsSlider.getValue());
         refresh();
     }
 
@@ -150,16 +143,6 @@ public class Controller {
     }
 
     @FXML
-    void gameOfLifeMenuOnAction() {
-        switchToGameOfLife();
-    }
-
-    @FXML
-    void wireworldMenuOnAction() {
-        switchToWireworld();
-    }
-
-    @FXML
     void nextGenerationButtonOnAction() {
         simulation.nextGeneration();
         refresh();
@@ -168,22 +151,16 @@ public class Controller {
 
     @FXML
     void startButtonOnAction() {
-        if(startButton.getText().equals("START")) {
+        if(startButton.getText().equals("START"))
             startSimulation();
-        }
-        else {
+        else
             stopSimulation();
-        }
     }
 
     @FXML
     void zoomSliderDragged() {
         cellSize = ZoomSlider.getValue()* 10;
         refresh();
-    }
-
-    @FXML
-    void scrollPaneClicked() {
     }
 
     @FXML
@@ -201,7 +178,7 @@ public class Controller {
         refresh();
     }
 
-    // Rysowanie komórek na siatce przy pomocy myszy
+    // Rysowanie komórek na siatce przy pomocy myszy i zatrzymywanie symulacji po najechaniu myszą na Canvas
     void initializeCanvasEventHandler() {
         canvas.addEventHandler(MouseEvent.MOUSE_CLICKED,
                 new EventHandler<MouseEvent>() {
@@ -217,19 +194,33 @@ public class Controller {
                         handleCanvasDrawing(event);
                     }
                 });
+        canvas.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        wasTimerPaused = timerPaused;
+                        if(!wasTimerPaused)
+                            stopSimulation();
+                    }
+                });
+        canvas.addEventHandler(MouseEvent.MOUSE_EXITED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if(!wasTimerPaused)
+                            startSimulation();
+                    }
+                });
+
     }
     void handleCanvasDrawing(MouseEvent event) {
-        stopSimulation();
         int row = (int)((event.getY() - event.getY()%cellSize)/cellSize);
         int column = (int)((event.getX() - event.getX()%cellSize)/cellSize);
-        //System.out.println(event.getX() + " " + event.getY() + " (" + row + ", " + column + ")");
 
         if (row < grid.getRows() && column < grid.getColumns() && row >= 0 && column >= 0) {
             grid.getCell(row, column).setState(CellSelector.getSelectionModel().getSelectedIndex());
             CanvasUtils.printCell(row, column, cellSize, gc, grid.getCell(row, column));
-            //refresh();
         }
-        startSimulation();
     }
 
     public void refresh() {
@@ -259,7 +250,7 @@ public class Controller {
     void initialize() {
         Main.controller = this;
 
-        SimulationSelector.getItems().addAll("Wireworld", "Gra w życie");
+        SimulationSelector.getItems().setAll("Wireworld", "Gra w życie");
 
         cellSize = ZoomSlider.getValue()* 10;
 
@@ -288,6 +279,7 @@ public class Controller {
         timerPaused = true;
     }
 
+    @FXML
     void switchToWireworld() {
         stopSimulation();
         ICellChecker cellChecker = new WireworldCellChecker();
@@ -297,10 +289,11 @@ public class Controller {
         CellSelector.getItems().setAll("Pusta komórka", "Głowa elektronu", "Ogon elektronu", "Przewodnik");
         CellSelector.getSelectionModel().select(CellSelector.getItems().size() - 1);
 
-        simulation = new Simulation(grid, cellChecker, this);
+        simulation = new Simulation(grid, cellChecker);
         refresh();
     }
 
+    @FXML
     void switchToGameOfLife() {
         stopSimulation();
         ICellChecker cellChecker = new GameOfLifeCellChecker();
@@ -310,7 +303,7 @@ public class Controller {
         CellSelector.getSelectionModel().select(CellSelector.getItems().size() - 1);
         SimulationSelector.getSelectionModel().select(1);
 
-        simulation = new Simulation(grid, cellChecker, this);
+        simulation = new Simulation(grid, cellChecker);
         refresh();
     }
 }

@@ -48,4 +48,15 @@ public abstract class AbstractCell implements Cloneable {
     public String toString() {
         return Integer.toString(state);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof AbstractCell))
+            return false;
+        AbstractCell cell = (AbstractCell) o;
+        if(cell.getState() == getState())
+            return true;
+        else
+            return false;
+    }
 }
