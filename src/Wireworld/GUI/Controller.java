@@ -257,6 +257,7 @@ public class Controller {
         centerVBox.setMinSize(1170, 800);
         ZoomSlider.setValue((ZoomSlider.getMax() + ZoomSlider.getMin())/2);
 
+
         timerPaused = true;
 
         gc = canvas.getGraphicsContext2D();
@@ -264,6 +265,9 @@ public class Controller {
         switchToWireworld();
         zoomSliderDragged();
         simulationSpeedSliderDragged();
+
+        RowsSlider.setValue(simulation.getGrid().getRows());
+        ColumnsSlider.setValue(simulation.getGrid().getColumns());
     }
 
     @FXML
